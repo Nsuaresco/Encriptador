@@ -1,3 +1,17 @@
+const code = {
+    a:"ai",
+    e:"enter",
+    i:"imes",
+    o:"ober",
+    u:"ufat"}
+
+const decode = {    
+    ai:"a",
+    enter:"e",
+    imes:"i",
+    ober:"o",
+    ufat:"u"}
+
 function encriptar(event){
     event.preventDefault();
     let pattern_checked = checkPattern();
@@ -5,36 +19,19 @@ function encriptar(event){
     document.getElementById('copy').hidden = true;
     document.getElementById('message').innerText = "";
     if (pattern_checked){
-        let texto = document.querySelector("#catcher").value;
-        let text = new String(texto);
-        let textoEncriptado = new String;
+        let text = document.querySelector("#catcher").value;
+        let encriptedText = new String;
         for (let index = 0; index < text.length; index++) {
-            switch (text[index]){
-                case 'a':
-                    textoEncriptado=textoEncriptado+"ai";
-                    break;
-                case 'e':
-                    textoEncriptado=textoEncriptado+"enter";
-                    break;
-                case 'i':
-                    textoEncriptado=textoEncriptado+"imes";
-                    break;
-                case 'o':
-                    textoEncriptado=textoEncriptado+"ober";
-                    break;
-                case 'u':
-                    textoEncriptado=textoEncriptado+"ufat";
-                    break;
-                
-                default:
-                    textoEncriptado=textoEncriptado+text[index];
+            if (!code.hasOwnProperty(text[index])){
+                encriptedText=encriptedText+text[index];
+            }else{
+                encriptedText=encriptedText+code[text[index]];
             }
         }
-        document.getElementById('message').innerText = textoEncriptado;
+        document.getElementById('message').innerText = encriptedText;
         document.getElementById('warning').hidden = true;
         document.getElementById('copy').hidden = false;
         document.querySelector("#catcher").value="";
-        
     }
 }
 
@@ -46,34 +43,14 @@ function desencriptar(event){
     document.getElementById('message').innerText = "";
     if (pattern_checked){
         let text = document.querySelector("#catcher").value;
-        let unencryptedText = new String;
-        for (let index = 0; index < text.length; index++) {
-            switch (text[index]){
-                case 'a':
-                    unencryptedText=unencryptedText+"a";
-                    index++;
-                    break;
-                case 'e':
-                    unencryptedText=unencryptedText+"e";
-                    index=index+4;
-                    break;
-                case 'i':
-                    unencryptedText=unencryptedText+"i";
-                    index=index+3;
-                    break;
-                case 'o':
-                    unencryptedText=unencryptedText+"o";
-                    index=index+3;
-                    break;
-                case 'u':
-                    unencryptedText=unencryptedText+"u";
-                    index=index+3;
-                    break;
-                
-                default:
-                    unencryptedText=unencryptedText+text[index];
-            }
-        }
+        let unencryptedText = new String(text);
+        var count = Object.keys(decode).length;
+        console.log(count);
+        (Object.keys(decode)).forEach(key => {
+            let search = key;
+            let replace = decode[key];
+            unencryptedText = unencryptedText.replaceAll(search,replace);
+});
         document.getElementById('message').innerText = unencryptedText;
         document.getElementById('warning').style.display = "none";
         document.getElementById('copy').hidden = false;
